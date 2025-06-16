@@ -1,18 +1,17 @@
 package commands
 
 import (
-	"fmt"
 	"redis/store"
 	"strconv"
 	"strings"
 	"time"
 )
 
-func HandleStringCommand(cmd string, parts []string) {
+func HandleStringCommand(cmd string, parts []string, println func(...any)) {
 	switch cmd {
 	case "SET":
 		if len(parts) < 3 {
-			fmt.Println("Usage: SET key value [EX Seconds]")
+			println("Usage: SET key value [EX Seconds]")
 			return
 		}
 		key := parts[1]
@@ -23,36 +22,36 @@ func HandleStringCommand(cmd string, parts []string) {
 			seconds, error := strconv.Atoi(parts[4])
 
 			if error != nil {
-				fmt.Println("Invalid TTL value")
+				println("Invalid TTL value")
 				return
 			}
 
 			store.TTL[key] = time.Now().Add(time.Duration(seconds) * time.Second)
 		}
 
-		fmt.Println("OK")
+		println("OK")
 
 	case "GET":
 		if len(parts) < 2 {
-			fmt.Println("Usage: GET key")
+			println("Usage: GET key")
 			return
 		}
 		key := parts[1]
 
 		if store.IsExpired(key) {
-			fmt.Println("(nill)")
+			println("(nill)")
 			return
 		}
 
 		if value, exists := store.Data[key]; exists {
-			fmt.Println(value)
+			println(value)
 		} else {
-			fmt.Println("(nil)")
+			println("(nil)")
 		}
 
 	case "DEL":
 		if len(parts) < 2 {
-			fmt.Println("Usage: DEL key")
+			println("Usage: DEL key")
 			return
 		}
 		key := parts[1]
@@ -60,12 +59,28 @@ func HandleStringCommand(cmd string, parts []string) {
 		_, exists2 := store.Hashes[key]
 		if exists1 {
 			delete(store.Data, key)
-			fmt.Println("(1)")
+			println("(1)")
 		} else if exists2 {
 			delete(store.Hashes, key)
-			fmt.Println("(1)")
+			println("(1)")
 		} else {
-			fmt.Println("(0)")
+			println("(0)")
+		}
+
+	case "SAVE":
+		err := store.SaveToFile("dump.json")
+		if err != nil {
+			println("SAVE failed:", err)
+		} else {
+			println("OK")
+		}
+
+	case "LOAD":
+		err := store.LoadFromFile("dump.json")
+		if err != nil {
+			println("LOAD failed:", err)
+		} else {
+			println("OK")
 		}
 	}
 }

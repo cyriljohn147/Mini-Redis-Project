@@ -1,0 +1,16 @@
+{
+  "data": {
+    "name": "cyril"
+  },
+  "hashes": {
+    "multiple": {
+      "age": "21",
+      "course": "cse",
+      "name": "abhinav"
+    },
+    "user:1": {
+      "age": "20",
+      "name": "abhinav"
+    }
+  }
+}
