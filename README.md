@@ -38,8 +38,10 @@ mini-redis/
 ```bash
 git clone https://github.com/your-username/mini-redis.git
 cd mini-redis
+```
 
 # Step 2: Run the server
+```bash
 go run main.go
 ```
 
