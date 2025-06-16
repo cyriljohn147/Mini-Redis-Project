@@ -18,6 +18,7 @@ It supports basic Redis commands like `SET`, `GET`, `DEL`, and advanced features
 
 ## 🗂️ Project Structure
 
+```text
 mini-redis/
 ├── main.go                    # Entry point with command parsing
 ├── commands/
@@ -25,7 +26,7 @@ mini-redis/
 │   └── hash.go                # Handles HSET, HGET, HDEL
 └── store/
 └── store.go               # Shared in-memory maps and TTL logic
-
+```
 ---
 
 ## 🧪 How to Run
@@ -37,7 +38,7 @@ cd mini-redis
 
 # Step 2: Run the program
 go run main.go
-
+```
 You’ll enter a REPL-like prompt:
 
 Mini Redis Started. Type Commands
