@@ -143,11 +143,3 @@ This project is licensed under the MIT License.
 Pull requests and issues are welcome! If you found this useful, star ⭐ the repo or share it.
 
 ---
-
-Let me know if you’d like:
-- GitHub badges (Go version, license, etc.)
-- Example `.env` or config
-- Screenshots/diagrams of the dashboard or data structure
-- Docker/Makefile for automation
-
-All are great final polish steps!
