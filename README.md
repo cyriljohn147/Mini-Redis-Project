@@ -1,9 +1,6 @@
-Absolutely! Here’s a clean and professional README.md for your MiniRedis project based on everything we’ve built so far:
 
-⸻
-
-
-# 🧠 MiniRedis — Your Own In-Memory Key-Value Store in Go
+# 🧠 MiniRedis
+## — Your Own In-Memory Key-Value Store in Go
 
 MiniRedis is a lightweight, Redis-like key-value store built in Go.
 It supports basic Redis commands like `SET`, `GET`, `DEL`, and advanced features like hashes (`HSET`, `HGET`, `HDEL`) and TTL expiration.
