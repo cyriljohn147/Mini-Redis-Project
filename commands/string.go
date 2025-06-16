@@ -67,20 +67,5 @@ func HandleStringCommand(cmd string, parts []string, println func(...any)) {
 			println("(0)")
 		}
 
-	case "SAVE":
-		err := store.SaveToFile("dump.json")
-		if err != nil {
-			println("SAVE failed:", err)
-		} else {
-			println("OK")
-		}
-
-	case "LOAD":
-		err := store.LoadFromFile("dump.json")
-		if err != nil {
-			println("LOAD failed:", err)
-		} else {
-			println("OK")
-		}
 	}
 }

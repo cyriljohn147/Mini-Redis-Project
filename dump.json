@@ -1,6 +1,8 @@
 {
   "data": {
-    "name": "cyril"
+    "name": "cyril",
+    "project": "MiniRedis",
+    "test": "success"
   },
   "hashes": {
     "multiple": {
@@ -11,6 +13,11 @@
     "user:1": {
       "age": "20",
       "name": "abhinav"
+    },
+    "user:2": {
+      "age": "25",
+      "height": "midget",
+      "name": "Vishal"
     }
   }
 }

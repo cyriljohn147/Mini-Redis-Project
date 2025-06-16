@@ -4,11 +4,44 @@ import (
 	"bytes"
 	"fmt"
 	"net"
+	"net/http"
+	"redis/api"
 	"redis/commands"
+	"redis/store"
 	"strings"
 )
 
 func main() {
+	err := store.LoadFromFile("dump.json")
+	if err != nil {
+		fmt.Println("⚠️  No dump file loaded:", err)
+	} else {
+		fmt.Println("✅ Loaded saved data from dump.json")
+	}
+
+	go startTCPServer()
+	go startHTTPServer()
+	select {}
+}
+
+func startHTTPServer() {
+	api.RegisterRoutes()
+	fmt.Println("HTTP API running on http://localhost:8080")
+	http.ListenAndServe(":8080", allowCORS(http.DefaultServeMux))
+}
+
+func allowCORS(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		h.ServeHTTP(w, r)
+	})
+}
+
+func startTCPServer() {
 	listener, err := net.Listen("tcp", ":6379")
 	if err != nil {
 		panic(err)

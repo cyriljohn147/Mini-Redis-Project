@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+func NowPlusSeconds(seconds int) time.Time {
+	return time.Now().Add(time.Duration(seconds) * time.Second)
+}
+
 type Snapshot struct {
 	Data   map[string]string            `json:"data"`
 	Hashes map[string]map[string]string `json:"hashes"`
