@@ -25,7 +25,7 @@ mini-redis/
 │   ├── string.go              # Handles SET, GET, DEL
 │   └── hash.go                # Handles HSET, HGET, HDEL
 └── store/
-└── store.go               # Shared in-memory maps and TTL logic
+    └── store.go               # Shared in-memory maps and TTL logic
 ```
 ---
 
