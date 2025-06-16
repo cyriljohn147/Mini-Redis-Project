@@ -1,23 +1,15 @@
 {
   "data": {
-    "name": "cyril",
-    "project": "MiniRedis",
-    "test": "success"
+    "name": "Cyril",
+    "test": "test"
   },
   "hashes": {
     "multiple": {
-      "age": "21",
       "course": "cse",
       "name": "abhinav"
     },
     "user:1": {
-      "age": "20",
       "name": "abhinav"
-    },
-    "user:2": {
-      "age": "25",
-      "height": "midget",
-      "name": "Vishal"
     }
   }
 }

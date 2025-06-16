@@ -14,6 +14,7 @@ func RegisterRoutes() {
 	http.HandleFunc("/set", handleSet)
 	http.HandleFunc("/hset", handleHSet)
 	http.HandleFunc("/save", handleSave)
+	http.HandleFunc("/hdel", handleHDel)
 }
 
 func handleListKeys(w http.ResponseWriter, r *http.Request) {
@@ -30,8 +31,9 @@ func handleListKeys(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleKey(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/key/")
 
+	key := strings.TrimPrefix(r.URL.Path, "/key/")
+	// fmt.Println("METHOD:", r.Method, "KEY:", key)
 	switch r.Method {
 	case http.MethodGet:
 		if store.IsExpired(key) {
@@ -128,31 +130,39 @@ func handleHSet(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "OK")
 }
 
-func handleDeleteKey(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/key/")
-
-	deleted := false
-
-	if _, exists := store.Data[key]; exists {
-		delete(store.Data, key)
-		deleted = true
+func handleHDel(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
 	}
 
-	if _, exists := store.Hashes[key]; exists {
-		delete(store.Hashes, key)
-		deleted = true
+	type Request struct {
+		Key   string `json:"key"`
+		Field string `json:"field"`
 	}
 
-	delete(store.TTL, key)
-
-	if deleted {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprint(w, "Deleted")
-	} else {
-		http.Error(w, "Key not found", http.StatusNotFound)
+	var req Request
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
 	}
+
+	if req.Key == "" || req.Field == "" {
+		http.Error(w, "Missing key or field", http.StatusBadRequest)
+		return
+	}
+
+	if hash, exists := store.Hashes[req.Key]; exists {
+		if _, ok := hash[req.Field]; ok {
+			delete(hash, req.Field)
+			w.WriteHeader(http.StatusOK)
+			fmt.Fprint(w, "1")
+			return
+		}
+	}
+
+	http.Error(w, "Field not found", http.StatusNotFound)
 }
-
 func handleSave(w http.ResponseWriter, r *http.Request) {
 	err := store.SaveToFile("dump.json")
 	if err != nil {
