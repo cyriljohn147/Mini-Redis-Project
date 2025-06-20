@@ -91,7 +91,7 @@ function App() {
         fieldsObj = JSON.parse(hashFields);
       } catch (err) {
         alert("Invalid JSON for fields");
-        return;
+        return err;
       }
 
       fetch("http://localhost:8080/hset", {

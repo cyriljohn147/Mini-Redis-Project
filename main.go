@@ -27,7 +27,7 @@ func main() {
 func startHTTPServer() {
 	api.RegisterRoutes()
 	fmt.Println("HTTP API running on http://localhost:8080")
-	http.ListenAndServe(":8080", allowCORS(http.DefaultServeMux))
+	http.ListenAndServe(":8000", allowCORS(http.DefaultServeMux))
 }
 
 func allowCORS(h http.Handler) http.Handler {
@@ -46,7 +46,7 @@ func allowCORS(h http.Handler) http.Handler {
 }
 
 func startTCPServer() {
-	listener, err := net.Listen("tcp", ":6379")
+	listener, err := net.Listen("tcp", ":8001")
 	if err != nil {
 		panic(err)
 	}
